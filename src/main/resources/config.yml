@@ -1,0 +1,35 @@
+# HorizonFixPlugin
+# This file is UTF-8. Edit it with an editor that keeps UTF-8, otherwise the
+# Chinese text in broadcast-message is corrupted when the file is saved.
+
+respawn:
+  # Respawn the player automatically after death.
+  enabled: true
+  # Ticks to wait before respawning. Values below 1 are raised to 1, because the
+  # death screen cannot be closed within the tick the player died in.
+  delay-ticks: 5
+  # Worlds where the vanilla death screen is kept. Names are case sensitive and
+  # match the directory name under the server root, e.g. "DIM-1".
+  blocked-worlds: []
+
+zero-health:
+  # Repair the state where a living player stays at 0 health and the client
+  # shows no hearts. The player is not killed; health is raised to minimum-health.
+  enabled: true
+  # Health written back by the repair. Keep it small so the repair does not heal
+  # the player; 1.0 equals half a heart.
+  minimum-health: 1.0
+  # Interval of the safety scan over online players, in ticks. The scan covers
+  # cases where a mod changes health without firing EntityDamageEvent.
+  scan-interval-ticks: 20
+  # Send a message to every player when a repair happens.
+  broadcast: true
+  # Message text. Supports & colour codes and the placeholder %player%.
+  # Set to an empty string to send nothing while keeping broadcast enabled.
+  broadcast-message: "&e[提示] &f玩家 &b%player% &f的血量显示异常，已自动修正"
+
+debug:
+  # Enable /hfp debug <player>, which sets the player's health to 0 so the
+  # zero-health repair can be verified on a live server. Keep it false on a
+  # production server: the command can drop any online player to 0 health.
+  enabled: false

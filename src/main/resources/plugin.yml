@@ -1,0 +1,22 @@
+name: HorizonFixPlugin
+version: ${project.version}
+main: dev.dsmnh.horizon.plugin.HorizonFixPlugin
+author: dsmnh
+description: Server-side fixes for auto respawn and zero-health state.
+load: POSTWORLD
+
+commands:
+  hfp:
+    description: HorizonFixPlugin admin command.
+    usage: /hfp <reload|status|debug>
+
+permissions:
+  horizonfixplugin.respawn:
+    description: Respawn automatically after death.
+    default: true
+  horizonfixplugin.admin:
+    description: Use /hfp reload and /hfp status.
+    default: op
+  horizonfixplugin.debug:
+    description: Use /hfp debug, which sets a player's health to 0.
+    default: op
