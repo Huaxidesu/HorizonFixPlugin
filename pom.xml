@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>dev.dsmnh.horizon</groupId>
+    <artifactId>horizonfixplugin</artifactId>
+    <version>1.2.2</version>
+    <packaging>jar</packaging>
+
+    <name>HorizonFixPlugin</name>
+    <description>Bukkit 侧修复合集：死亡自动重生、零血量状态修正</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>8</maven.compiler.release>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>glaremasters</id>
+            <url>https://repo.glaremasters.me/repository/public</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>elmakers</id>
+            <url>https://maven.elmakers.com/repository</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <!--
+        编译期接口有两个来源，二者互斥：
+        1. libs/bukkit-api-1.7.10.jar 存在时优先使用它。该文件由 build.bat 从 GTNH 官方
+           Release 的 Thermos 服务端 jar 中提取，接口面与实际运行的服务端一致。
+        2. 文件不存在时退回公共仓库的 spigot-api。SpigotMC 官方仓库只提供 1.8 及以上，
+           1.7.10 的构件只在社区镜像中，因此列了两个互为备份的仓库。
+    -->
+    <profiles>
+        <profile>
+            <id>local-api</id>
+            <activation>
+                <file>
+                    <exists>${project.basedir}/libs/bukkit-api-1.7.10.jar</exists>
+                </file>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>craftbukkit</artifactId>
+                    <version>1.7.10</version>
+                    <scope>system</scope>
+                    <systemPath>${project.basedir}/libs/bukkit-api-1.7.10.jar</systemPath>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <profile>
+            <id>online-api</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.spigotmc</groupId>
+                    <artifactId>spigot-api</artifactId>
+                    <version>1.7.10-R0.1-SNAPSHOT</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
+    <build>
+        <finalName>HorizonFixPlugin-${project.version}</finalName>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

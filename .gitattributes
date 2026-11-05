@@ -1,0 +1,2 @@
+# Windows 批处理必须保持 GBK + CRLF，禁止 Git 做换行符转换
+*.bat -text
